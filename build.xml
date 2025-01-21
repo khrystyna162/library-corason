@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="library-corason" default="compile" basedir=".">
+    <property name="src.dir" value="src/main/java"/>
+    <property name="resources.dir" value="src/main/resources"/>
+    <property name="build.dir" value="build"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="data.dir" value="src/main/resources/data"/>
+
+    <target name="resolve-dependencies">
+        <mkdir dir="${lib.dir}"/>
+        <!-- Gson -->
+        <get src="https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar"
+             dest="${lib.dir}/gson-2.10.1.jar" usetimestamp="true"/>
+        <!-- Lombok -->
+        <get src="https://repo1.maven.org/maven2/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar"
+             dest="${lib.dir}/lombok-1.18.30.jar" usetimestamp="true"/>
+    </target>
+
+    <path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="init" depends="clean">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${data.dir}"/>
+    </target>
+
+    <target name="compile" depends="init, resolve-dependencies">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath" includeantruntime="false">
+            <compilerarg value="-parameters"/>
+        </javac>
+    </target>
+</project>
